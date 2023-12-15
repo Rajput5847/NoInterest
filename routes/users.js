@@ -1,7 +1,18 @@
 const mongoose = require('mongoose');
 const plm = require('passport-local-mongoose');
 
-mongoose.connect("mongodb+srv://divyanshchauhanrajput5847:harHarMahadev_01@nointerest.m15cwc5.mongodb.net/?retryWrites=true&w=majority");
+const dbUrl = "mongodb+srv://NoInterestUser:yeaajkalkenalleberojgarchaprichapallchor@nointerest.m15cwc5.mongodb.net/NoInterestDatabase?retryWrites=true&w=majority";
+
+const connectionParams = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}
+
+mongoose.connect(dbUrl, connectionParams).then(() => {
+  console.info("Connected To MongoDB Atlas")
+}).catch((e)=>{
+  console.log("Error: ", e);
+})
 
 const userSchema =  mongoose.Schema({
   name: String,
