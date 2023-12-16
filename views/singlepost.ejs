@@ -9,7 +9,10 @@
   </div>
   <div class="w-1/2 px-5 elemlala">
     <h1 class="font-semibold capitalize text-justify leading-tight"><%= postObject.title %></h1>
-    <h1 class="opacity-70 leading-tight">@<%= userObject.username %></h1>
+    <div class="flex gap-2">
+      <img class="h-5 w-5 rounded-full object-cover" src="/images/uploads/<%= userObject.profileImage %>">
+      <h1 class="opacity-70 leading-tight">@<%= userObject.username %></h1>
+    </div>
     <p class="mt-2 text-justify leading-tight"><%= postObject.description %></p>
   </div>
 </div>
