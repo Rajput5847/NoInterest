@@ -1,22 +1,28 @@
 <% include ./partials/header.ejs %>
 <% include ./partials/nav.ejs %>
-  <div class="w-full min-h-screen px-10 py-8">
-    <div class="cards flex flex-wrap gap-10">
-      <% user.posts.forEach(function(elem){ %> 
-        <div id="carad" class="w-32 card">
-          <div class="w-full h-40 bg-sky-200 rounded-md overflow-hidden">
-            <img class="w-full h-full object-cover" src="/images/uploads/<%= elem.image %>" alt="">
+    <div class="w-full min-h-screen px-10 py-8">
+
+      <div class="cards flex flex-wrap gap-10">
+        <% user.posts.forEach(function(elem){ %>
+          <a href="/show/posts/<%= elem._id %>">
+          <div id="carad" class="w-32 card">
+            <div class="w-full h-40 bg-sky-200 rounded-md overflow-hidden">
+              <img class="w-full h-full object-cover" src="/images/uploads/<%= elem.image %>" alt="">
+            </div>
+            <h5 class="mt-2 text-center font-semibold break-words">
+              <%= elem.title %>
+            </h5>
           </div>
-          <h5 class="mt-2 text-center font-semibold break-words"><%= elem.title %></h5>
-        </div>
-       <% }) %>
+          </a>
+          <% }) %>
+      </div>
+
     </div>
-  </div>
-  <style>
-    @media (max-width: 700px) {
-      #carad {
-        width: 100%;
+    <style>
+      @media (max-width: 700px) {
+        #carad {
+          width: 100%;
+        }
       }
-    }
-  </style>
+    </style>
 <% include ./partials/footer.ejs %>

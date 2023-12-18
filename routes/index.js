@@ -16,6 +16,23 @@ router.get('/', function (req, res) {
   res.render('index', { error: req.flash('error') });
 });
 
+router.get("/show/posts/:postid", async function (req, res) {
+  const postid = req.params.postid;
+  try {
+    const post = await postModel.findById(postid);
+    if (post) {
+      const postObject = post.toObject();
+      res.render("apnapostdekho", { postObject });
+    } else {
+      console.log('Post not found');
+      res.status(404).send('Post not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
+
 router.post('/fileupload', isLoggedIn, upload.single("image"), async function (req, res) {
   const user = await userModel.findOne({
     username: req.session.passport.user

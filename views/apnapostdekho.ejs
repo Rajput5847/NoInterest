@@ -1,0 +1,33 @@
+<% include ./partials/header.ejs %>
+<% include ./partials/nav.ejs %>
+
+<div id="mainContainer" class="px-28 py-10 w-full min-h-screen flex">
+  <div class="w-1/2 h-fit rounded overflow-hidden elemlala">
+    <img class="w-full h-auto object-cover" src="/images/uploads/<%= postObject.image %>" alt="">
+  </div>
+  <div class="w-1/2 px-5 elemlala">
+    <h1 class="font-semibold capitalize text-justify leading-tight"><%= postObject.title %></h1>
+    <p class="mt-2 text-justify leading-tight"><%= postObject.description %></p>
+  </div>
+</div>
+<style>
+  @media (max-width: 900px) {
+    #mainContainer {
+      padding: 2rem;
+    }
+  }
+  @media (max-width: 700px) {
+    .elemlala {
+      width: 100%;
+      height: fit-content;
+      padding: 0;
+      margin-top: 5px;
+    }
+    #mainContainer {
+      display: block;
+      padding: 5px;
+    }
+  }
+</style>
+
+<% include ./partials/footer.ejs %>
