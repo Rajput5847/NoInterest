@@ -10,6 +10,9 @@ const { default: mongoose } = require('mongoose');
 passport.use(new localStrategy(userModel.authenticate()));
 
 router.get('/', function (req, res) {
+  if (req.isAuthenticated()) {
+    res.redirect("/profile")
+  }
   res.render('index', { error: req.flash('error') });
 });
 
