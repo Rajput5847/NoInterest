@@ -1,0 +1,70 @@
+<% include ./partials/header.ejs %>
+
+  <% include ./partials/nav.ejs %>
+
+    <div class="profile w-full min-h-screen pt-5">
+      <div class="profdet flex flex-col items-center">
+        <div class="relative">
+          <div class="w-32 h-32 border-2 bg-orange-300 rounded-full overflow-hidden">
+            <img src="/images/uploads/<%= userObject.profileImage %>" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <h1 id="naam" class="text-3xl font-bold mt-5">
+          <%= userObject.name %>
+        </h1>
+        <h3 class="text-md">@<%= userObject.username %>
+        </h3>
+      </div>
+      <div id="cards" class="cards flex flex-wrap gap-10 px-10 mt-10">
+        <% userObject.posts.forEach(function(post) { %>
+          <div class="card w-[21%]">
+            <a href="/feed/<%= post._id %>" class="w-full">
+              <div class="w-full">
+                <div class="w-full h-40 bg-orange-300 border-2 rounded-lg overflow-hidden">
+                  <img src="/images/uploads/<%= post.image %>" class="w-full h-full object-cover">
+                </div>
+                <p class="block text-xl text-center font-medium mt-1"><%= post.title %></p>
+              </div>
+            </a>
+          </div>
+        <% }); %>
+        
+      </div>
+    </div>
+
+    <style>
+      @media (max-width: 700px) {
+        #cards {
+          width: 100%;
+          flex-direction: column;
+          padding-left: 5%;
+          padding-right: 5%;
+        }
+
+        #cards .card {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        #cards .card>div {
+          width: 100%;
+          height: 300px;
+        }
+
+        #naam {
+          text-align: center;
+        }
+
+      }
+    </style>
+    <script>
+      document.querySelector("#changeProfileImage").addEventListener("click", function () {
+        document.querySelector("#uploadform input").click();
+      })
+      document.querySelector("#uploadform input").addEventListener("change", function () {
+        document.querySelector("#uploadform").submit();
+      })
+    </script>
+    <% include ./partials/footer.ejs %>
