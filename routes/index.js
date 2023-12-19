@@ -134,10 +134,6 @@ router.post('/register', function (req, res) {
     })
 });
 
-// router.get('/failedregister', (req, res)=>{
-//   req.flash()
-// })
-
 router.post('/login', passport.authenticate("local", {
   failureRedirect: "/",
   successRedirect: "/profile",
