@@ -16,6 +16,23 @@ router.get('/', function (req, res) {
   res.render('index', { error: req.flash('error') });
 });
 
+router.get("/users/@:username", async function (req, res) {
+  const username = req.params.username;
+  try {
+    const user = await userModel.findOne({ username: username });
+    if (user) {
+      const userObject = user.toObject();
+      res.render("othersprofileview", { userObject });
+    } else {
+      console.log('User not found');
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
+
 router.get("/show/posts/:postid", async function (req, res) {
   const postid = req.params.postid;
   try {
