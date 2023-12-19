@@ -16,7 +16,10 @@ mongoose.connect(dbUrl, connectionParams).then(() => {
 
 const userSchema =  mongoose.Schema({
   name: String,
-  username: String,
+  username: {
+    type: String,
+    unique: true
+  },
   email: String,
   password: String,
   profileImage: String,

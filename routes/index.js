@@ -94,7 +94,8 @@ router.get('/feed/:postid', async function (req, res) {
 });
 
 router.get('/register', function (req, res) {
-  res.render('register');
+  let userIfFail = req.flash("usernameError");
+  res.render('register', { userIfFail });
 });
 
 router.get('/add', isLoggedIn, async function (req, res) {
@@ -127,8 +128,15 @@ router.post('/register', function (req, res) {
       passport.authenticate("local")(req, res, function () {
         res.redirect("/profile");
       })
+    }).catch(()=>{
+      req.flash("usernameError", "Username already taken!");
+      res.redirect("/register");
     })
 });
+
+// router.get('/failedregister', (req, res)=>{
+//   req.flash()
+// })
 
 router.post('/login', passport.authenticate("local", {
   failureRedirect: "/",
