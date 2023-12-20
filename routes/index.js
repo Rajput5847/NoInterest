@@ -16,13 +16,22 @@ router.get('/', function (req, res) {
   res.render('index', { error: req.flash('error') });
 });
 
-router.get("/users/@:username", async function (req, res) {
+async function getUserWithPosts(req, res) {
   const username = req.params.username;
+
   try {
+    // Find the user by username
     const user = await userModel.findOne({ username: username });
+
     if (user) {
-      const userObject = user.toObject();
-      res.render("othersprofileview", { userObject });
+      // Get the post IDs associated with the user
+      const postIds = user.posts; // Assuming the field is named 'posts'
+
+      // Fetch the posts using the post IDs
+      const posts = await postModel.find({ _id: { $in: postIds } });
+
+      // Send the user and posts as properties of an object in the response
+      res.render("othersprofileview",{ user: user.toObject(), posts });
     } else {
       console.log('User not found');
       res.status(404).send('User not found');
@@ -31,7 +40,9 @@ router.get("/users/@:username", async function (req, res) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
-})
+}
+
+router.get("/users/@:username", getUserWithPosts);
 
 router.get("/show/posts/:postid", async function (req, res) {
   const postid = req.params.postid;
