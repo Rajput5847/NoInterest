@@ -3,8 +3,14 @@
 
 
 
+<div class="block px-5">
+  <p id="addedtext" class="bg-orange-300 rounded-md text-center ease-in-out hidden">Post Added To Your Board</p>
+</div>
 <div id="mainContainer" class="px-28 py-10 w-full min-h-screen flex">
-  <div class="w-1/2 h-fit rounded overflow-hidden elemlala">
+  <div class="w-1/2 h-fit rounded overflow-hidden elemlala relative">
+    <div id="pinbtn" class="absolute top-0 left-0 h-10 w-10 cursor-pointer rounded-full bg-orange-300 flex items-center justify-center">
+      <i class="ri-pushpin-fill"></i>
+    </div>
     <img class="w-full h-auto object-cover" src="/images/uploads/<%= postObject.image %>" alt="">
   </div>
   <div class="w-1/2 px-5 elemlala">
@@ -35,4 +41,27 @@
     }
   }
 </style>
+<script>
+  document.getElementById('pinbtn').addEventListener('click', async function() {
+    const postId = '<%= postObject._id %>';
+    try {
+      const response = await fetch(`/addBoard/${postId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postId }),
+      });
+    } catch (error) {
+      console.log('Error adding board:', error);
+    }
+  });
+  document.getElementById('pinbtn').addEventListener('click', ()=>{
+    document.querySelector("#pinbtn").style.display = "none";
+    document.querySelector("#addedtext").style.display = "block";
+    setTimeout(function () {
+      document.querySelector("#addedtext").style.display = "none";
+    }, 5000);
+  })
+</script>
 <% include ./partials/footer.ejs %>

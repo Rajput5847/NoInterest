@@ -16,22 +16,18 @@ router.get('/', function (req, res) {
   res.render('index', { error: req.flash('error') });
 });
 
+router.get("/search", function (req, res) {
+  res.send("Page Under Development")
+})
+
 async function getUserWithPosts(req, res) {
   const username = req.params.username;
-
   try {
-    // Find the user by username
     const user = await userModel.findOne({ username: username });
-
     if (user) {
-      // Get the post IDs associated with the user
-      const postIds = user.posts; // Assuming the field is named 'posts'
-
-      // Fetch the posts using the post IDs
+      const postIds = user.posts;
       const posts = await postModel.find({ _id: { $in: postIds } });
-
-      // Send the user and posts as properties of an object in the response
-      res.render("othersprofileview",{ user: user.toObject(), posts });
+      res.render("othersprofileview", { user: user.toObject(), posts });
     } else {
       console.log('User not found');
       res.status(404).send('User not found');
@@ -41,6 +37,18 @@ async function getUserWithPosts(req, res) {
     res.status(500).send('Internal Server Error');
   }
 }
+
+router.post('/addBoard/:newBoard', async (req, res) => {
+  const loggedUser = req.session.passport.user;
+  const newBoard = req.params.newBoard;
+  const user = await userModel.findOne({ username: loggedUser });
+  try {
+    user.boards.push(newBoard);
+    user.save();
+  } catch (error) {
+    console.log("error adding board")
+  }
+});
 
 router.get("/users/@:username", getUserWithPosts);
 
@@ -70,12 +78,21 @@ router.post('/fileupload', isLoggedIn, upload.single("image"), async function (r
   res.redirect("/profile");
 });
 
+
+
 router.get('/profile', isLoggedIn, async function (req, res) {
+  let posts;
   const user =
     await userModel
       .findOne({ username: req.session.passport.user })
       .populate("posts")
-  res.render("profile", { user });
+      try {
+        posts = await postModel.find({ _id: { $in: user.boards } }).exec();
+        // console.log(posts);
+      } catch (error) {
+        console.error(`Error retrieving posts: ${error.message}`);
+      }
+  res.render("profile", { user, posts });
 });
 
 router.get('/show/posts', isLoggedIn, async function (req, res) {
@@ -93,7 +110,7 @@ router.get('/feed', isLoggedIn, async function (req, res) {
   res.render("feed", { user, posts })
 });
 
-router.get('/feed/:postid', async function (req, res) {
+router.get('/feed/:postid', isLoggedIn, async function (req, res) {
   const postid = req.params.postid;
   try {
     const post = await postModel.findById(postid);
@@ -156,7 +173,7 @@ router.post('/register', function (req, res) {
       passport.authenticate("local")(req, res, function () {
         res.redirect("/profile");
       })
-    }).catch(()=>{
+    }).catch(() => {
       req.flash("usernameError", "Username already taken!");
       res.redirect("/register");
     })

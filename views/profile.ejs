@@ -21,8 +21,10 @@
         </h1>
         <h3 class="text-md">@<%= user.username %>
         </h3>
-        <a href="/edit" class="mt-4 px-7 py-2 bg-orange-300 border-2 rounded-full">Edit <i
-            class="ri-edit-2-fill"></i></a>
+        <a href="/search" class="mt-4 px-7 py-2 bg-orange-300 border-2 rounded-full">
+          Search
+          <i class="ri-search-eye-line"></i>
+        </a>
         <a href="/add" class="px-10 py-2 bg-orange-300 border-2 mt-7 rounded-md">Add New Post</a>
       </div>
       <div id="cards" class="cards flex flex-wrap gap-10 px-10 mt-10">
@@ -39,6 +41,18 @@
             </div>
           </a>
         </div>
+        <% posts.forEach(function(post) { %>
+          <div class="card w-[21%] border-none">
+            <a href="/feed/<%= post._id %>" class="w-full">
+              <div class="w-full">
+                <div class="w-full h-40 bg-orange-300 border-2 rounded-lg overflow-hidden">
+                  <img src="/images/uploads/<%= post.image %>" class="w-full h-full object-cover">
+                </div>
+                <p class="block text-xl text-center font-medium mt-1"><%= post.title %></p>
+              </div>
+            </a>
+          </div>
+        <% }); %>
       </div>
     </div>
 

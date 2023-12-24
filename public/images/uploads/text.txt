@@ -1,1 +1,1 @@
-text
+This file acts as a saviour as it stops git from ignoring the uploads folder (cd ..).
